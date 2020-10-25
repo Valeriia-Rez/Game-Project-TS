@@ -5,7 +5,7 @@ import {IHistoryOfGame} from "../historyOfGames/IHistoryOfGames";
 export class ScoreBoard implements IScoreBoard{
     protected historyOfGames: IHistoryOfGame[];
     public constructor(){
-        this.historyOfGames = new Array();
+        this.historyOfGames = new Array<IHistoryOfGame>();
     }
 
     public addResult(resultOfGame: IHistoryOfGame): void {
@@ -71,7 +71,7 @@ export class ScoreBoard implements IScoreBoard{
     }
   
     private getTopWinner(playersWithWinsCount:{[playerName: string]: number}): string {
-      return Object.keys(playersWithWinsCount).reduce((acc:string, cur:string) => {
+      return Object.keys(playersWithWinsCount).reduce((acc:string, cur:string): string => {
         if(playersWithWinsCount[acc] > playersWithWinsCount[cur]){
           acc = acc
         } else {

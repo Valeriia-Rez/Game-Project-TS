@@ -28,7 +28,40 @@ class Game {
     checkIfPlayerHasEnoughHealth(player, difficulty) {
         return player.getHealth() >= difficulty || false;
     }
-    playGame(difficulty, players, scoreBoard) {
+    addResultToScoreBoard(currentPlayer, nextPlayer, winner, scoreBoard) {
+        const currentPlayerName = currentPlayer.player.getName();
+        const nextPlayerName = nextPlayer.player.getName();
+        scoreBoard.addResult({
+            player1: {
+                name: currentPlayerName,
+                attemptScore: currentPlayer.attemptScore,
+            },
+            player2: {
+                name: nextPlayerName,
+                attemptScore: nextPlayer.attemptScore,
+            },
+            winner: {
+                winnerName: winner.player.getName(),
+                attemptScore: winner.attemptScore,
+            },
+            date: new Date(),
+        });
+    }
+    getWinnerAndUpdatePlayers(currentPlayer, nextPlayer) {
+        let winner;
+        if (currentPlayer.attemptScore > nextPlayer.attemptScore) {
+            winner = currentPlayer;
+            currentPlayer.player.addWins();
+            nextPlayer.player.addLoses();
+        }
+        else {
+            winner = nextPlayer;
+            nextPlayer.player.addWins();
+            currentPlayer.player.addLoses();
+        }
+        return winner;
+    }
+    playGame(players, scoreBoard) {
         players.forEach((player, indexForCurrentPlayer) => {
             if (indexForCurrentPlayer === players.length - 1) {
                 return;
@@ -37,8 +70,7 @@ class Game {
                 player,
                 attemptScore: Math.floor(Math.random() * 500),
             };
-            const currentPlayerName = currentPlayer.player.getName();
-            players.forEach((player, index) => {
+            players.forEach((_, index) => {
                 let indexForNextPlayer;
                 indexForCurrentPlayer === 0
                     ? (indexForNextPlayer = index + 1)
@@ -50,33 +82,8 @@ class Game {
                     player: players[indexForNextPlayer],
                     attemptScore: Math.floor(Math.random() * 500),
                 };
-                const nextPlayerName = nextPlayer.player.getName();
-                let winner;
-                if (currentPlayer.attemptScore > nextPlayer.attemptScore) {
-                    winner = currentPlayer;
-                    currentPlayer.player.addWins();
-                    nextPlayer.player.addLoses();
-                }
-                else {
-                    winner = nextPlayer;
-                    nextPlayer.player.addWins();
-                    currentPlayer.player.addLoses();
-                }
-                scoreBoard.addResult({
-                    player1: {
-                        name: currentPlayerName,
-                        attemptScore: currentPlayer.attemptScore,
-                    },
-                    player2: {
-                        name: nextPlayerName,
-                        attemptScore: nextPlayer.attemptScore,
-                    },
-                    winner: {
-                        winnerName: winner.player.getName(),
-                        attemptScore: winner.attemptScore,
-                    },
-                    date: new Date(),
-                });
+                const winner = this.getWinnerAndUpdatePlayers(currentPlayer, nextPlayer);
+                this.addResultToScoreBoard(currentPlayer, nextPlayer, winner, scoreBoard);
             });
         });
     }
@@ -85,7 +92,7 @@ class Game {
         if (playersWithEnoughHealthToEntryGame.length < 2) {
             return;
         }
-        this.playGame(this.difficulty, playersWithEnoughHealthToEntryGame, this.scoreBoard);
+        this.playGame(playersWithEnoughHealthToEntryGame, this.scoreBoard);
     }
 }
 exports.Game = Game;

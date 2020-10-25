@@ -1,12 +1,14 @@
 import {Human} from "./human/Human";
 import {ScoreBoard} from "./scoreBoard/ScoreBoard";
 import {Game} from "./game/Game";
+import { IScoreBoard } from "./scoreBoard/IScoreBoard";
+import { IPlayer } from "./player/IPlayer";
 
-const board = new ScoreBoard();
-const alex = new Human(1, "Alex", 50, 0, 0, 0, 1991, "male");
-const ivan = new Human(2, "Ivan", 50, 0, 0, 0, 1987, "male");
-const max = new Human(3, "Max", 50, 0, 0, 0, 1994, "male");
-const game = new Game([alex, ivan, max], 1, board);
+const board: IScoreBoard = new ScoreBoard();
+const alex: IPlayer = new Human(1, "Alex", 50, 0, 0, 0, 1991, "male");
+const ivan: IPlayer = new Human(2, "Ivan", 50, 0, 0, 0, 1987, "male");
+const max: IPlayer = new Human(3, "Max", 50, 0, 0, 0, 1994, "male");
+const game: Game = new Game([alex, ivan, max], 1, board);
 //console.log(game);
 //console.log(alex,ivan,max);
 //console.log(max.getHealth());
@@ -34,7 +36,7 @@ console.log(board.getMostFrequentWinner());
     console.log(err);
   });*/
 
-  const getHistoryOfGames = async () => {
+ async function getHistoryOfGames(): Promise<void>{
     try {
       const result1 = await board.getHistoryOfGames(1, 1000);
       console.log(result1);

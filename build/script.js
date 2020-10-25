@@ -41,17 +41,20 @@ console.log(board.getMostFrequentWinner());
   .catch((err) => {
     console.log(err);
   });*/
-const getHistoryOfGames = () => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const result1 = yield board.getHistoryOfGames(1, 1000);
-        console.log(result1);
-        const result2 = yield board.getHistoryOfGames(2, 3000);
-        console.log(result2);
-        const result3 = yield board.getHistoryOfGames(5, 5000);
-        console.log(result3);
-    }
-    catch (error) {
-        console.log(error);
-    }
-});
+function getHistoryOfGames() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const result1 = yield board.getHistoryOfGames(1, 1000);
+            console.log(result1);
+            const result2 = yield board.getHistoryOfGames(2, 3000);
+            console.log(result2);
+            const result3 = yield board.getHistoryOfGames(5, 5000);
+            console.log(result3);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    });
+}
+;
 getHistoryOfGames();
